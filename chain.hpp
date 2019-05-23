@@ -1,58 +1,82 @@
+# include <iostream>
 
 namespace itertools{
 
-template  <typename T,typename U> class chain{
+template  <typename R,typename V> 
+class chain{
 
 private:
-T iter1;
-U iter2;
+R iter1;
+V iter2;
 
-public: 
-chain<T,U>(T start, U end) : iter1(start),iter2(end){};
+public:
+chain<R,V>(const R start,const V end) : iter1(start),iter2(end){};
 
 //inner class iterator
-class iterator{
+template  <typename T,typename U> class iterator{
 public:
-T firstIter;
-U secondIter;
-bool isEnded;
-iterator(T a,U b):firstIter(a),secondIter(b),isEnded(false){}
-
-iterator& operator++()
-{
-    return *this;
-}
-const iterator operator++(int)
-{
-    return *this;
-}
-
-bool operator==(const iterator &other) const
-{
-    return other.firstIter == firstIter;
-}
-bool operator!=(const iterator &other) const //ok?
-{
-    if(firstIter && firstIter != other.firstIter){
-        return true;
+    T firstIter;
+    U secondIter;
+    bool isEnded;
+   
+    iterator(T a,U b):firstIter(a),secondIter(b),isEnded(false){}
+   
+    iterator& operator++() //ok
+    {
+        if(isEnded){
+            ++secondIter;
+        }
+        else{
+            ++firstIter;
+        }
+        return *this;
     }
-    if(!firstIter && secondIter != other.secondIter){
-        return true;
+   
+    const iterator operator++(int) //ok
+    {
+        if(isEnded){
+            secondIter++;
+        }
+        else{
+            firstIter++;
+        }
+        return *this;
     }
-    return false;
-}
-
-auto operator*() const //ok?
-{
-    if(firstIter) return *firstIter;
-    else return *secondIter;
-}
+   
+    bool operator!=(const chain::iterator<T,U> &other) //ok?
+    {
+        if(!(firstIter != other.firstIter)){
+            isEnded = true;
+        }
+        if(!isEnded){
+            return (firstIter != other.firstIter);
+        }
+        else return (secondIter != other.secondIter);
+       
+    }
+   
+    auto operator*() const
+    {
+        if(isEnded){
+            return *secondIter;
+        }
+        else{
+            return *firstIter;
+        }
+    }
 
 };//end iterator class
 
 public:
-auto begin()const {return iter1.begin();} // return iterator(iterable1, iterable2)
-auto end()const{return iter1.end();} // return iterator(iterable1, iterable2, false)
+    auto begin()const {
+        return iterator<decltype(iter1.begin()), decltype(iter2.begin())>(iter1.begin(), iter2.begin());
+       
+    }
+   
+    auto end()const{
+        return iterator<decltype(iter1.end()), decltype(iter2.end())>(iter1.end(), iter2.end());
+    }
+   
 };//end class chain
 
-};//end namespace itertools
+};//end namespace itertool
