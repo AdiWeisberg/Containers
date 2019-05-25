@@ -1,83 +1,73 @@
-# include <iostream>
-#include "range.hpp"
+#pragma once
+#include <iostream>
 #include <utility>
+#include <ostream>
 using std::pair;
-using namespace std;
-namespace itertools{
+#include "chain.hpp"
 
-template<typename T, typename U> class mypair;
-
-template <typename T,typename U>  
-class zip{
-
-private:
-T iter1;
-U iter2;
+namespace itertools
+{
+template <typename T, typename U>
+class zip
+{
 
 public:
-zip<T,U>(const T start,const U end) : iter1(start),iter2(end){};
+    const T container1;
+    const U container2;
 
-//inner class iterator
+    zip(const T &a, const U &b) : container1(a), container2(b) {}
+    
 
-class iterator{
-    private:
-        decltype(iter1.begin()) firstIter;
-        decltype(iter2.begin()) secondIter;
+    // inner iterator class
+    class iterator
+    {
 
     public:
+        decltype(container1.begin()) iter1;
+        decltype(container2.begin()) iter2;
 
-        iterator(decltype(iter1.begin()) a,decltype(iter2.begin()) b):firstIter(a),secondIter(b){}
-    
-        iterator& operator++() 
-        {
-            ++firstIter;
-            ++secondIter;
-            return *this;
-        }
+        iterator(const T &a, const U &b): iter1(a.begin()), iter2(b.begin()) {}
 
-        bool operator==(const iterator &other){
-            return (firstIter==other.firstIter);
-        }
-    
-        bool operator!=(const iterator &other) const //ok?
-        {
-        return  (firstIter!=other.firstIter);
-        }
-    
+        iterator(const T &a, const U &b, int i) : iter1(a.end()), iter2(b.end()) {}
+
         auto operator*() const
         {
-            return make_pair(*firstIter,*secondIter);
+
+            return make_pair(*iter1, *iter2);
         }
 
-};//end iterator class
-
-
-    public:
-        iterator begin()  {
-            return iterator(iter1.begin(), iter2.begin());
-        
-        }
-    
-        iterator end() {
-            return iterator(iter1.end(), iter2.end());
-        }
-    
-};//end class zip
-
-//     template<typename Q, typename A> class mypair{
-//     private:
-//         Q first;
-//         A second;
-//     public:
-//         mypair<Q,A>(const Q f, const A s): first(f), second(s){} //constructor
-
-
-// };//end mypair class
-
-        template <typename T,typename U>
-        ostream& operator<<(ostream& os ,const pair<T,U> &p){
-            os<<p.first << ","<<p.second;
-            return os;
+        iterator &operator++()
+        {
+            ++iter1;
+            ++iter2;
+             return *this;
         }
 
-};//end namespace itertool
+        bool operator!=(const iterator &other)
+        {
+            return (iter1 != other.iter1 && iter2 != other.iter2);
+        }
+    };
+
+    //end of class iterator
+
+    iterator begin() const
+    {
+        return iterator{container1, container2};
+    }
+    iterator end() const
+    {
+        return iterator{container1, container2, 1};
+    }
+
+};
+
+
+template <typename T, typename U>
+ostream &operator<<(ostream &os, const pair<T, U> &pair)
+{
+    os << pair.first << "," << pair.second;
+    return os;
+}
+
+} // namespace itertools

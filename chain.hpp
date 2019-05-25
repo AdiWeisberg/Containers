@@ -1,82 +1,77 @@
-# include <iostream>
+#pragma once
+#include <iostream>
+#include <utility>
+#include <ostream>
 
-namespace itertools{
 
-template  <typename R,typename V> 
-class chain{
-
-private:
-R iter1;
-V iter2;
-
-public:
-chain<R,V>(const R start,const V end) : iter1(start),iter2(end){};
-
-//inner class iterator
-template  <typename T,typename U> class iterator{
-public:
-    T firstIter;
-    U secondIter;
-    bool isEnded;
-   
-    iterator(T a,U b):firstIter(a),secondIter(b),isEnded(false){}
-   
-    iterator& operator++() //ok
-    {
-        if(isEnded){
-            ++secondIter;
-        }
-        else{
-            ++firstIter;
-        }
-        return *this;
-    }
-   
-    const iterator operator++(int) //ok
-    {
-        if(isEnded){
-            secondIter++;
-        }
-        else{
-            firstIter++;
-        }
-        return *this;
-    }
-   
-    bool operator!=(const chain::iterator<T,U> &other) //ok?
-    {
-        if(!(firstIter != other.firstIter)){
-            isEnded = true;
-        }
-        if(!isEnded){
-            return (firstIter != other.firstIter);
-        }
-        else return (secondIter != other.secondIter);
-       
-    }
-   
-    auto operator*() const
-    {
-        if(isEnded){
-            return *secondIter;
-        }
-        else{
-            return *firstIter;
-        }
-    }
-
-};//end iterator class
+namespace itertools
+{
+template <typename T, typename R>
+class chain
+{
 
 public:
-    auto begin()const {
-        return iterator<decltype(iter1.begin()), decltype(iter2.begin())>(iter1.begin(), iter2.begin());
-       
-    }
-   
-    auto end()const{
-        return iterator<decltype(iter1.end()), decltype(iter2.end())>(iter1.end(), iter2.end());
-    }
-   
-};//end class chain
+    const T container1;
+    const R container2;
 
-};//end namespace itertool
+    chain(const T &a, const R &b) : container1(a), container2(b) {}
+    
+
+    // inner iterator class
+    class iterator
+    {
+
+    public:
+        decltype(container1.begin()) iter1;
+        decltype(container2.begin()) iter2;
+        bool isEnded;
+
+        iterator(const T &a, const R &b): iter1(a.begin()), iter2(b.begin()),isEnded(false) {}
+
+        iterator(const T &a, const R &b, int i) : iter1(a.end()), iter2(b.end()),isEnded(true) {}
+
+        auto operator*() const
+        {
+
+            if(isEnded){
+                return *iter2;
+            }
+            else return *iter1;
+        }
+
+        iterator &operator++()
+        {
+           if(isEnded){
+                ++iter2;
+            }
+            else ++iter1;
+            return *this;
+        }
+
+        bool operator!=(const iterator &other)
+        {
+            if(!(iter1!=other.iter1)){
+                isEnded = true;
+            }
+            if(!isEnded){
+                return (iter1!=other.iter1);
+            }
+            else return (iter2 != other.iter2);
+        }
+    };
+
+    //end of class iterator
+
+    iterator begin() const
+    {
+        return iterator{container1, container2};
+    }
+    iterator end() const
+    {
+        return iterator{container1, container2, 1};
+    }
+
+};
+
+
+} // namespace itertools
