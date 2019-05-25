@@ -32,7 +32,7 @@ public:
         iterator(const T &a, const U &b) : 
         iter1(a.begin()), iter2(b.begin()), iter1_end(a.end()), iter2end(b.end()), iter2Begin(b.begin()) {}
 
-        iterator(const T &a, const U &b, int i) : iter1(a.end()), iter1_end(a.end()), iter2(b.end()) {}
+        iterator(const T &a, const U &b, int i) : iter1(a.end()), iter1_end(a.end()), iter2(b.end()),iter2end(b.end()) {}
 
         auto operator*() const
         {
