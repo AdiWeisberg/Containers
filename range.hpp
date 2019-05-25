@@ -20,7 +20,6 @@ public:
     public:
         iterator()
         {
-            iterR = NULL;
         }
         iterator(R other)
         {
