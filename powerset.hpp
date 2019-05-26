@@ -1,18 +1,30 @@
+#pragma once
+#include <math.h>
 namespace itertools{
 
 template  <typename T> class powerset{
 
 private:
-T iter1;
+T container1;
+int subsetNum;
 
 public: 
-powerset<T>(T power) : iter1(power){};
+powerset<T>(T power) : iter1(power){
+    subsetNum = pow(2,container1.length())
+};
 
 //inner class iterator
 class iterator{
 public:
-T powerIter;
-iterator(T a):powerIter(a){}
+decltype(container1.begin()) iterPower;
+decltype(container1.begin()) iterBegin;
+int finish;
+int start;
+
+iterator(const T &a,int num):iterPower(a.begin()),iterBegin(a.begin()){
+    start = num;
+    finish = pow(2,a.length());
+}
 
 iterator& operator++()
 {
@@ -25,11 +37,11 @@ const iterator operator++(int)
 
 bool operator==(const iterator &other) const
 {
-    return other.powerIter == powerIter;
+    return other.iterPower == iterPower;
 }
 bool operator!=(const iterator &other) const
 {
-    return other.powerIter != powerIter;
+    return other.iterPower != iterPower;
 }
 
 auto operator*() const
@@ -40,8 +52,14 @@ auto operator*() const
 };//end iterator class
 
 public:
-auto begin()const {return iter1.begin();} // return iterator(iterable1, iterable2)
-auto end()const{return iter1.end();} // return iterator(iterable1, iterable2, false)
+  iterator begin() const
+    {
+        return iterator{container1, 0};
+    }
+    iterator end() const
+    {
+        return iterator{container1,subsetNum};
+    }
 };//end class chain
 
 };//end namespace itertools
