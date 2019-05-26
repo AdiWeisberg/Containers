@@ -67,27 +67,27 @@ int main()
             .CHECK_EQUAL(iterable_to_string(zip(chain(range('a','c'), range('c','e')),range(1,5))), ansZip3)
             .CHECK_EQUAL(iterable_to_string(zip(zip(range(1,4), string("xyz")),zip(string("abc"),range(6,9)))), ansZip4);
 
-        // //the answers we expect from product
-        // string ansPro1 = "1,h 1,i 2,h 2,i ";
-        // string ansPro2 = "#,4 #,5 $,4 $,5 ";
-        // string ansPro3 = "C,d C,o C,g A,d A,o A,g T,d T,o T,g ";
+        //the answers we expect from product
+        string ansPro1 = "1,h 1,i 2,h 2,i ";
+        string ansPro2 = "#,4 #,5 $,4 $,5 ";
+        string ansPro3 = "C,d C,o C,g A,d A,o A,g T,d T,o T,g ";
 
-        // testcase.setname("product tests")
-        //     .CHECK_EQUAL(iterable_to_string(product(range(1,3), string("hi"))), ansPro1)
-        //     .CHECK_EQUAL(iterable_to_string(product(range('#','%'), range(4,6))), ansPro2)
-        //     .CHECK_EQUAL(iterable_to_string(product(string("CAT"), string("dog"))), ansPro2);
+        testcase.setname("product tests")
+            .CHECK_EQUAL(iterable_to_string(product(range(1,3), string("hi"))), ansPro1)
+            .CHECK_EQUAL(iterable_to_string(product(range('#','%'), range(4,6))), ansPro2)
+            .CHECK_EQUAL(iterable_to_string(product(string("CAT"), string("dog"))), ansPro3);
 
-        // //the answers we expect from product
-        // string ansPower1 = "{} {&} {@} {!} {&,@} {&,!} {@,!} {&,@,!} ";
+         //the answers we expect from product
+        string ansPower1 = "{} {&} {@} {&,@} {!} {&,!} {@,!} {&,@,!} ";
         // string ansPower2 = "{} {a} {b} {c} {d} {a,b} {a,c} {a,d} {b,c} {b,d} {c,d} {a,b,c} {a,b,d} {a,c,d} {b,c,d} {a,b,c,d} ";
-        // string ansPower3 = "{} {7} {8} {9} {7,8} {7,9} {8,9} {7,8,9} ";
-        // string ansPower4 = "{} {a} {b} {x} {y} {a,b} {a,x} {a,y} {b,x} {b,y} {x,y} {a,b,x} {a,b,y} {a,x,y} {b,x,y} {a,b,x,y} ";
+        string ansPower3 = "{} {7} {8} {7,8} {9} {7,9} {8,9} {7,8,9} ";
+        string ansPower4 = "{} {a} {b} {a,b} {x} {a,x} {b,x} {a,b,x} {y} {a,y} {b,y} {a,b,y} {x,y} {a,x,y} {b,x,y} {a,b,x,y} ";
 
         // testcase.setname("powerSet tests")
-        //     .CHECK_EQUAL(iterable_to_string(powerset(string("&@!"))),ansPower1)
+          .CHECK_EQUAL(iterable_to_string(powerset(string("&@!"))),ansPower1)
         //     .CHECK_EQUAL(iterable_to_string(powerset(string("abcd"))),ansPower2)
-        //     .CHECK_EQUAL(iterable_to_string(powerset(range(7,10))),ansPower3)
-        //     .CHECK_EQUAL(iterable_to_string(powerset(chain(range('a','c'),range('x','z')))),ansPower4);
+            .CHECK_EQUAL(iterable_to_string(powerset(range(7,10))),ansPower3)
+            .CHECK_EQUAL(iterable_to_string(powerset(chain(range('a','c'),range('x','z')))),ansPower4);
 
         grade = testcase.grade();
     }
