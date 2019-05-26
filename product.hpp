@@ -43,16 +43,7 @@ public:
         iterator &operator++()
         {
            
-            // std::cout << "hi";
-            // if (!(iter2 != iter2end))
-            // {
-            //     std::cout << "as";
-            //     ++iter1;
-            //     iter2=iter2Begin; 
-            // }
-            // else
-            // {
-            //     iter2++;
+   
             if(iter1 != iter1_end){
                 ++iter2;
             }
@@ -61,17 +52,7 @@ public:
                 iter2 = iter2Begin;
                 ++iter1;
             }
-            // }
 
-            //if(iter1)
-            
-            
-            // else 
-            // {
-            //     iter2 = iter2Begin;
-            //     ++iter1;
-            //     std::cout << "as";
-            // }
             return *this;
 
         }
