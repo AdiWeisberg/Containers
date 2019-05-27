@@ -5,26 +5,16 @@ namespace itertools{
 template  <typename T> class powerset{
 
 private:
-T container1;
-int subsetNum;
+T iter1;
 
 public: 
-powerset<T>(T power) : iter1(power){
-    subsetNum = pow(2,container1.length())
-};
+powerset<T>(T power) : iter1(power){};
 
 //inner class iterator
 class iterator{
 public:
-decltype(container1.begin()) iterPower;
-decltype(container1.begin()) iterBegin;
-int finish;
-int start;
-
-iterator(const T &a,int num):iterPower(a.begin()),iterBegin(a.begin()){
-    start = num;
-    finish = pow(2,a.length());
-}
+T powerIter;
+iterator(T a):powerIter(a){}
 
 iterator& operator++()
 {
@@ -37,11 +27,11 @@ const iterator operator++(int)
 
 bool operator==(const iterator &other) const
 {
-    return other.iterPower == iterPower;
+    return other.powerIter == powerIter;
 }
 bool operator!=(const iterator &other) const
 {
-    return other.iterPower != iterPower;
+    return other.powerIter != powerIter;
 }
 
 auto operator*() const
@@ -52,14 +42,8 @@ auto operator*() const
 };//end iterator class
 
 public:
-  iterator begin() const
-    {
-        return iterator{container1, 0};
-    }
-    iterator end() const
-    {
-        return iterator{container1,subsetNum};
-    }
+auto begin()const {return iter1.begin();} // return iterator(iterable1, iterable2)
+auto end()const{return iter1.end();} // return iterator(iterable1, iterable2, false)
 };//end class chain
 
 };//end namespace itertools
