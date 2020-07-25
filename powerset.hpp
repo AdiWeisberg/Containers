@@ -23,11 +23,11 @@ namespace itertools{
                 const U firstIter; // start location
                 const U lastIter; // end location
                 unsigned int index; // curr place of the iterator
-                unsigned int setSize; // the total size of the set.
+                size_t setSize; // the total size of the set.
             public:
                 iterator(U _first, U _last) : firstIter(_first), lastIter(_last), index(0), setSize(0){
                     //calculate the size of the set: 
-                    unsigned int counter = 0; 
+                    size_t counter = 0;
                     U curr = firstIter;
                     while(curr != lastIter){
                         ++counter;
@@ -40,20 +40,20 @@ namespace itertools{
                     vector<typename remove_const<typename remove_reference<decltype(*firstIter)>::type>::type> setPower; //get the original element’s type (not a const reference to it).
                     U curr_iter = firstIter; // start location
                     unsigned int i = index; //the current index
-                    while(curr_iter != lastIter){
-                        if(i){ // 0 = false, 1 = true.
-                            set.emplace_back(*curr_iter); //add directly to the end without create new object and copy it.
+                    while(curr_iter != lastIter && (i != 0)){ // we havn't reached the end, and there are still elements to insert
+                        if(i % 2 != 0){ // 0 = false, 1 = true.
+                            setPower.emplace_back(*curr_iter); //add directly to the end without create new object and copy it.
                         }
-                        i = i >> 1; // divide by 2 using shift-left.
+                        i = i >> 1; // divide by 2 using binary operation of shift-left. 
                         ++curr_iter;
                     }
-                    return set;
+                    return setPower;
                 }
                 
                 //operators for iterator: operator!=, operator*, operator++:
                 
-                bool operator !=(iterator<U> const& other) const{
-                    return(setSize - index != other.setSize  - other.index -1);
+                bool operator !=(iterator<U> const& other) const{ // the index is the number of elements that left to iterate.
+                    return((setSize - index) != (other.setSize  - other.index -1));
                 }
                 
                 iterator<U> &operator++(){
@@ -64,13 +64,13 @@ namespace itertools{
         }; //end of iterator class
         
         public: 
-            powerset(const T _container) container(_container); // constructor for set
+            powerset(const T& _container) : container(_container) {} // constructor for set
             
             auto begin() const {
-                return iterator<decltype(container.begin())>(container.begin(), container.end()));
+                return iterator<decltype(container.begin())>(container.begin(), container.end());
             }
             auto end() const {
-                return iterator<decltype(container.end())>(container.end(), container.end()));
+                return iterator<decltype(container.end())>(container.end(), container.end());
             }
     }; //end of powerset class
     
